@@ -52,7 +52,6 @@ class BST:
             else:
                 bst_find.ToLeft = False
                 node = node.RightChild
-
         return bst_find
 
     def AddKeyValue(self, key: int, val: Any) -> Optional[bool]:
@@ -73,6 +72,7 @@ class BST:
 
     def FinMinMax(self, FromNode: Optional[BSTNode],
                   FindMax: bool) -> Optional[BSTNode]:
+
         node = FromNode
         if node is None:
             return None
@@ -109,14 +109,11 @@ class BST:
         self._delete_two_children(node_to_delete)
 
     def Count(self) -> int:
-        if self.Root is None:
-            return 0
 
-        def _count(node: BSTNode) -> int:
+        def _count(node: Optional[BSTNode]) -> int:
             if node is None:
                 return 0
             return _count(node.LeftChild) + _count(node.RightChild) + 1
-
         return _count(self.Root)
 
     def _delete_no_children(self, node_to_delete: BSTNode) -> None:
@@ -144,6 +141,8 @@ class BST:
             parent_node.LeftChild = child_node
         else:
             parent_node.RightChild = child_node
+        if child_node:
+            child_node.Parent = parent_node
 
     def _delete_two_children(self, node_to_delete: BSTNode) -> None:
         successor = self.FinMinMax(

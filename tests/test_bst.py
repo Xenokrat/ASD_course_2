@@ -73,7 +73,6 @@ class TestBST(unittest.TestCase):
         bst_find = tree.FindNodeByKey(7)
         self.assertTrue(bst_find.NodeHasKey)
         self.assertIs(nodes['node_6'].RightChild, bst_find.Node)
-
     
     def test_add_key_value_right(self) -> None:
         tree, nodes = self.create_test_tree()
@@ -121,21 +120,36 @@ class TestBST(unittest.TestCase):
         )
 
     def test_delete_leaf(self) -> None:
+        r"""
+            8
+           / \
+          4   12
+         / \   \
+        2  6    14
+        """
         tree, nodes = self.create_test_tree()
-        KEY = 10
-        tree.DeleteNodeByKey(KEY)
-        bst_find = tree.FindNodeByKey(KEY)
+        key = 10
+        tree.DeleteNodeByKey(key)
+        bst_find = tree.FindNodeByKey(key)
         self.assertFalse(bst_find.NodeHasKey)
         self.assertIsNone(nodes['node_12'].LeftChild)
 
     def test_delete_node_one_child(self) -> None:
+        r"""
+            8
+           / \
+          4   14
+         / \
+        2  6 
+        """
         tree, nodes = self.create_test_tree()
         tree.DeleteNodeByKey(10)
-        KEY = 12
-        tree.DeleteNodeByKey(KEY)
-        bst_find = tree.FindNodeByKey(KEY)
+        key = 12
+        tree.DeleteNodeByKey(key)
+        bst_find = tree.FindNodeByKey(key)
         self.assertFalse(bst_find.NodeHasKey)
         self.assertIs(nodes['node_8'].RightChild, nodes['node_14'])
+        self.assertIs(nodes['node_14'].Parent, nodes['node_8'])
 
     def test_delete_node_two_children(self) -> None:
         r"""
@@ -164,9 +178,7 @@ class TestBST(unittest.TestCase):
         """
         tree, nodes = self.create_test_tree()
         tree.DeleteNodeByKey(8)
-        print(f"tree.Root: {tree.Root}")
         bst_find = tree.FindNodeByKey(8)
-        print(f"bst_find: {bst_find}")
         self.assertFalse(bst_find.NodeHasKey)
         self.assertIs(tree.Root, nodes['node_10'])
         self.assertIs(nodes['node_10'].RightChild, nodes['node_12'])
