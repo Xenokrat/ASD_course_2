@@ -19,7 +19,7 @@ class BSTNode:
 class BSTFind:
 
     def __init__(self) -> None:
-        self.Node: Optional[BSTNode] = None # None if zero nodes in tree:
+        self.Node: Optional[BSTNode] = None  # None if zero nodes in tree:
         self.NodeHasKey = False
         self.ToLeft = False
 
@@ -56,7 +56,7 @@ class BST:
 
     def AddKeyValue(self, key: int, val: Any) -> Optional[bool]:
         bst_find = self.FindNodeByKey(key)
-        # instert into empty tree
+        # insert into empty tree
         if bst_find.Node is None:
             self.Root = BSTNode(key, val, None)
             return
@@ -98,11 +98,11 @@ class BST:
         # node_to_delete is leaf
         if not (has_left_child or has_right_child):
             self._delete_no_children(node_to_delete)
-            return 
+            return
 
         # node_to_delete has one child
         if has_left_child ^ has_right_child:
-            self._delete_one_child(node_to_delete, has_left_child)
+            self._delete_one_child(node_to_delete)
             return
 
         # node_to_delete has two children
@@ -114,35 +114,48 @@ class BST:
             if node is None:
                 return 0
             return _count(node.LeftChild) + _count(node.RightChild) + 1
+
         return _count(self.Root)
 
-    def _delete_no_children(self, node_to_delete: BSTNode) -> None:
-            parent_node = node_to_delete.Parent
-            if parent_node is None:  # delete Root
-                self.Root = None
-                return
-            if node_to_delete is parent_node.LeftChild:
-                parent_node.LeftChild = None
-            else:
-                parent_node.RightChild = None
+    def _clear_node_to_delete(self, node_to_delete: BSTNode) -> None:
+        node_to_delete.Parent = None
+        node_to_delete.LeftChild = None
+        node_to_delete.RightChild = None
 
-    def _delete_one_child(self, node_to_delete: BSTNode,
-                          has_left_child: bool) -> None:
+    def _delete_no_children(self, node_to_delete: BSTNode) -> None:
         parent_node = node_to_delete.Parent
-        child_node = (
-            node_to_delete.LeftChild
-            if has_left_child
-            else node_to_delete.RightChild
-        )
+        if parent_node is None:  # delete Root
+            self.Root = None
+            return
+        if node_to_delete is parent_node.LeftChild:
+            parent_node.LeftChild = None
+        else:
+            parent_node.RightChild = None
+        self._clear_node_to_delete(node_to_delete)
+
+    def _delete_one_child(self, node_to_delete: BSTNode) -> None:
+
+        # child node cannot be None
+        # if it's None, return method for deletion childless node
+        if node_to_delete.LeftChild is not None:
+            child_node = node_to_delete.LeftChild
+        elif node_to_delete.RightChild is not None:
+            child_node = node_to_delete.RightChild
+        else:
+            return self._delete_no_children(node_to_delete)
+
+        parent_node = node_to_delete.Parent
         if parent_node is None:  # delete Root with one child
             self.Root = child_node
+            self.Root.Parent = None
             return
         if node_to_delete is parent_node.LeftChild:
             parent_node.LeftChild = child_node
         else:
             parent_node.RightChild = child_node
-        if child_node:
-            child_node.Parent = parent_node
+
+        child_node.Parent = parent_node
+        self._clear_node_to_delete(node_to_delete)
 
     def _delete_two_children(self, node_to_delete: BSTNode) -> None:
         successor = self.FinMinMax(
@@ -150,12 +163,12 @@ class BST:
             False
         )
         if successor is None:  # the tree is empty
-            return 
+            return
 
         if successor.RightChild is None:
             self._delete_no_children(successor)
         else:
-            self._delete_one_child(successor, has_left_child=False)
+            self._delete_one_child(successor)
 
         parent_node = node_to_delete.Parent
         if parent_node is None:
@@ -172,4 +185,4 @@ class BST:
             successor.LeftChild.Parent = successor
         if successor.RightChild:
             successor.RightChild.Parent = successor
-
+        self._clear_node_to_delete(node_to_delete)
