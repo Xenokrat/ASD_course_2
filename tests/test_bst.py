@@ -193,16 +193,19 @@ class TestBST(unittest.TestCase):
         self.assertIsNone(nodes['node_12'].LeftChild)
 
     def test_delete_last_node(self) -> None:
-        r""" 8 """
-        node_8 = BSTNode(8, '', None)
+        r""" 8 
+            / \
+        """
+        node_8 = BSTNode(8, 'value', None)
         tree = BST(node_8)
         bst_find = tree.FindNodeByKey(8)
         self.assertTrue(bst_find.NodeHasKey)
+
         tree.DeleteNodeByKey(8)
         bst_find = tree.FindNodeByKey(8)
+        self.assertFalse(bst_find.NodeHasKey)
         self.assertIsNone(bst_find.Node)
         self.assertIsNone(tree.Root)
-        self.assertIsNone(node_8.Parent)
 
     def test_count(self) -> None:
         btree, _ = self.create_test_tree()
@@ -212,10 +215,3 @@ class TestBST(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
 
-    def test_count(self) -> None:
-        btree, _ = self.create_test_tree()
-        self.assertEqual(btree.Count(), 7)
-
-
-if __name__ == '__main__':
-    unittest.main()
