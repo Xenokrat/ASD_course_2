@@ -146,13 +146,12 @@ class TestBST(unittest.TestCase):
            / \
           4   14
          / \
-        2  6 
+        2  6
         """
         tree, nodes = self.create_test_tree()
         tree.DeleteNodeByKey(10)
-        key = 12
-        tree.DeleteNodeByKey(key)
-        bst_find = tree.FindNodeByKey(key)
+        tree.DeleteNodeByKey(12)
+        bst_find = tree.FindNodeByKey(12)
         self.assertFalse(bst_find.NodeHasKey)
         self.assertIs(nodes['node_8'].RightChild, nodes['node_14'])
         self.assertIs(nodes['node_14'].Parent, nodes['node_8'])
@@ -190,6 +189,7 @@ class TestBST(unittest.TestCase):
         self.assertIs(nodes['node_10'].RightChild, nodes['node_12'])
         self.assertIs(nodes['node_10'].LeftChild, nodes['node_4'])
         self.assertIs(nodes['node_12'].Parent, nodes['node_10'])
+        self.assertIs(nodes['node_12'].RightChild, nodes['node_14'])
         self.assertIsNone(nodes['node_12'].LeftChild)
 
     def test_delete_last_node(self) -> None:
