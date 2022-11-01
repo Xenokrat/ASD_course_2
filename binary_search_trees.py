@@ -31,12 +31,6 @@ class BSTFind:
 
 class BST:
 
-    def printTree(self, node: BSTNode, level=0) -> None:
-        if node != None:
-            self.printTree(node.RightChild, level + 1)
-            print(' ' * 4 * level + '-> ' + str(node.NodeKey))
-            self.printTree(node.LeftChild, level + 1)
-
     def __init__(self, node: Optional[BSTNode]) -> None:
         self.Root = node
 
@@ -76,7 +70,8 @@ class BST:
         else:
             bst_find.Node.RightChild = node_to_insert
 
-    def FinMinMax(self, FromNode: Optional[BSTNode],
+    def FinMinMax(self,
+                  FromNode: Optional[BSTNode],
                   FindMax: bool) -> Optional[BSTNode]:
 
         node = FromNode
@@ -113,13 +108,14 @@ class BST:
             self._replace_node(successor, successor.RightChild)
         self._replace_node(node_to_delete, successor)
 
-        successor.LeftChild = node_to_delete.LeftChild
-        if successor.LeftChild is not None:
-            successor.LeftChild.Parent = successor
+        if successor is not None:
+            successor.LeftChild = node_to_delete.LeftChild
+            if successor.LeftChild is not None:
+                successor.LeftChild.Parent = successor
 
-        successor.RightChild = node_to_delete.RightChild
-        if successor.RightChild is not None:
-            successor.RightChild.Parent = successor
+            successor.RightChild = node_to_delete.RightChild
+            if successor.RightChild is not None:
+                successor.RightChild.Parent = successor
 
     def _replace_node(self,
                       node_to_delete: Optional[BSTNode],
@@ -127,7 +123,7 @@ class BST:
 
         if node_to_delete is None:
             return
-        elif node_to_delete.Parent is None:
+        if node_to_delete.Parent is None:
             self.Root = successor
         elif node_to_delete.Parent.LeftChild is node_to_delete:
             node_to_delete.Parent.LeftChild = successor
@@ -137,13 +133,10 @@ class BST:
         if successor is not None:
             successor.Parent = node_to_delete.Parent
 
-
     def Count(self) -> int:
-
         def _count(node: Optional[BSTNode]) -> int:
             if node is None:
                 return 0
             return _count(node.LeftChild) + _count(node.RightChild) + 1
 
         return _count(self.Root)
-
