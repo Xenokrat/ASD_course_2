@@ -54,21 +54,21 @@ class BST:
                 node = node.RightChild
         return bst_find
 
-    def AddKeyValue(self, key: int, val: Any) -> Optional[bool]:
+    def AddKeyValue(self, key: int, val: Any) -> bool:
         bst_find = self.FindNodeByKey(key)
+        if bst_find.NodeHasKey:
+            return False
         # insert into empty tree
         if bst_find.Node is None:
             self.Root = BSTNode(key, val, None)
-            return
-
-        if bst_find.NodeHasKey:
-            return False
+            return True
 
         node_to_insert = BSTNode(key, val, bst_find.Node)
         if bst_find.ToLeft:
             bst_find.Node.LeftChild = node_to_insert
         else:
             bst_find.Node.RightChild = node_to_insert
+        return True
 
     def FinMinMax(self,
                   FromNode: Optional[BSTNode],
@@ -86,7 +86,7 @@ class BST:
                 return node
             node = next_node
 
-    def DeleteNodeByKey(self, key: int) -> Optional[bool]:
+    def DeleteNodeByKey(self, key: int) -> bool:
         bst_find = self.FindNodeByKey(key)
 
         # return False if node not found
@@ -97,11 +97,11 @@ class BST:
 
         if node_to_delete.LeftChild is None:
             self._replace_node(node_to_delete, node_to_delete.RightChild)
-            return
+            return True
 
         if node_to_delete.RightChild is None:
             self._replace_node(node_to_delete, node_to_delete.LeftChild)
-            return
+            return True
 
         successor = self.FinMinMax(node_to_delete.RightChild, False)
         if successor is not None:
@@ -116,6 +116,7 @@ class BST:
             successor.RightChild = node_to_delete.RightChild
             if successor.RightChild is not None:
                 successor.RightChild.Parent = successor
+        return True
 
     def _replace_node(self,
                       node_to_delete: Optional[BSTNode],
