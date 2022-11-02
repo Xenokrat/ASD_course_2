@@ -48,7 +48,7 @@ class TestBST(unittest.TestCase):
     def test_found_node_by_key(self) -> None:
         tree, nodes = self.create_test_tree()
         bst_find = tree.FindNodeByKey(10)
-        self.assertIs(bst_find.Node, nodes['node_10'], 'existing node not found')
+        self.assertIs(bst_find.Node, nodes['node_10'], 'node not found')
         self.assertTrue(bst_find.NodeHasKey, 'NodeHasKey not True')
 
     def test_not_found_node_left(self) -> None:
@@ -75,7 +75,7 @@ class TestBST(unittest.TestCase):
         bst_find = tree.FindNodeByKey(7)
         self.assertFalse(bst_find.NodeHasKey)
 
-        tree.AddKeyValue(7, 'kek')
+        self.assertTrue(tree.AddKeyValue(7, 'kek'))
         bst_find = tree.FindNodeByKey(7)
         self.assertTrue(bst_find.NodeHasKey)
         self.assertIs(nodes['node_6'].RightChild, bst_find.Node)
@@ -85,14 +85,14 @@ class TestBST(unittest.TestCase):
         bst_find = tree.FindNodeByKey(1)
         self.assertFalse(bst_find.NodeHasKey)
 
-        tree.AddKeyValue(1, 'kek')
+        self.assertTrue(tree.AddKeyValue(1, 'kek'))
         bst_find = tree.FindNodeByKey(1)
         self.assertTrue(bst_find.NodeHasKey)
         self.assertIs(nodes['node_2'].LeftChild, bst_find.Node)
 
     def test_add_key_value_to_empty_tree(self) -> None:
         tree = BST(None)
-        tree.AddKeyValue(1, '')
+        self.assertTrue(tree.AddKeyValue(1, ''))
         self.assertIsNotNone(tree.Root)
 
     def test_add_dublicated_key_value(self) -> None:
@@ -125,6 +125,10 @@ class TestBST(unittest.TestCase):
             tree.FinMinMax(from_node, False), nodes['node_10']
         )
 
+    def test_delete_non_existing_key(self) -> None:
+        tree, _ = self.create_test_tree()
+        self.assertFalse(tree.DeleteNodeByKey(50))
+
     def test_delete_leaf(self) -> None:
         r"""
             8
@@ -135,7 +139,7 @@ class TestBST(unittest.TestCase):
         """
         tree, nodes = self.create_test_tree()
         key = 10
-        tree.DeleteNodeByKey(key)
+        self.assertTrue(tree.DeleteNodeByKey(key))
         bst_find = tree.FindNodeByKey(key)
         self.assertFalse(bst_find.NodeHasKey)
         self.assertIsNone(nodes['node_12'].LeftChild)
@@ -149,8 +153,8 @@ class TestBST(unittest.TestCase):
         2  6
         """
         tree, nodes = self.create_test_tree()
-        tree.DeleteNodeByKey(10)
-        tree.DeleteNodeByKey(12)
+        self.assertTrue(tree.DeleteNodeByKey(10))
+        self.assertTrue(tree.DeleteNodeByKey(12))
         bst_find = tree.FindNodeByKey(12)
         self.assertFalse(bst_find.NodeHasKey)
         self.assertIs(nodes['node_8'].RightChild, nodes['node_14'])
@@ -161,11 +165,11 @@ class TestBST(unittest.TestCase):
             8
            / \
           4   14
-         / \  / 
+         / \  /
         2  6  10
         """
         tree, nodes = self.create_test_tree()
-        tree.DeleteNodeByKey(12)
+        self.assertTrue(tree.DeleteNodeByKey(12))
         bst_find = tree.FindNodeByKey(12)
         self.assertFalse(bst_find.NodeHasKey)
         self.assertIs(nodes['node_8'].RightChild, nodes['node_14'])
@@ -182,7 +186,7 @@ class TestBST(unittest.TestCase):
         2  6    14
         """
         tree, nodes = self.create_test_tree()
-        tree.DeleteNodeByKey(8)
+        self.assertTrue(tree.DeleteNodeByKey(8))
         bst_find = tree.FindNodeByKey(8)
         self.assertFalse(bst_find.NodeHasKey)
         self.assertIs(tree.Root, nodes['node_10'])
@@ -193,7 +197,7 @@ class TestBST(unittest.TestCase):
         self.assertIsNone(nodes['node_12'].LeftChild)
 
     def test_delete_last_node(self) -> None:
-        r""" 8 
+        r""" 8
             / \
         """
         node_8 = BSTNode(8, 'value', None)
@@ -201,7 +205,7 @@ class TestBST(unittest.TestCase):
         bst_find = tree.FindNodeByKey(8)
         self.assertTrue(bst_find.NodeHasKey)
 
-        tree.DeleteNodeByKey(8)
+        self.assertTrue(tree.DeleteNodeByKey(8))
         bst_find = tree.FindNodeByKey(8)
         self.assertFalse(bst_find.NodeHasKey)
         self.assertIsNone(bst_find.Node)
@@ -214,4 +218,3 @@ class TestBST(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
