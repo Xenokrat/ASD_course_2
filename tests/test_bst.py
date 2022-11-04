@@ -1,7 +1,7 @@
 from typing import Tuple, Dict
 import unittest
 
-from binary_search_trees import *
+from binary_search_trees import BST, BSTNode
 
 
 class TestBST(unittest.TestCase):
@@ -13,33 +13,27 @@ class TestBST(unittest.TestCase):
     2  6  10 14
     """
 
-    def printTree(self, node: BSTNode, level=0) -> None:
-        if node != None:
-            self.printTree(node.RightChild, level + 1)
-            print(' ' * 4 * level + '-> ' + str(node.NodeKey))
-            self.printTree(node.LeftChild, level + 1)
-
     def create_test_tree(self) -> Tuple[BST, Dict[str, BSTNode]]:
-        node_8  = BSTNode(8,  '', None)
-        node_4  = BSTNode(4,  '', node_8)
+        node_8 = BSTNode(8,  '', None)
+        node_4 = BSTNode(4,  '', node_8)
         node_12 = BSTNode(12, '', node_8)
-        node_2  = BSTNode(2,  '', node_4)
-        node_6  = BSTNode(6,  '', node_4)
+        node_2 = BSTNode(2,  '', node_4)
+        node_6 = BSTNode(6,  '', node_4)
         node_10 = BSTNode(10, '', node_12)
         node_14 = BSTNode(14, '', node_12)
-        node_4.LeftChild  = node_2
+        node_4.LeftChild = node_2
         node_4.RightChild = node_6
-        node_8.LeftChild  = node_4
+        node_8.LeftChild = node_4
         node_8.RightChild = node_12
-        node_12.LeftChild  = node_10
+        node_12.LeftChild = node_10
         node_12.RightChild = node_14
 
         nodes = {
-            'node_8' : node_8,
-            'node_4' : node_4,
+            'node_8': node_8,
+            'node_4': node_4,
             'node_12': node_12,
-            'node_2' : node_2,
-            'node_6' : node_6,
+            'node_2': node_2,
+            'node_6': node_6,
             'node_10': node_10,
             'node_14': node_14,
         }
@@ -79,7 +73,7 @@ class TestBST(unittest.TestCase):
         bst_find = tree.FindNodeByKey(7)
         self.assertTrue(bst_find.NodeHasKey)
         self.assertIs(nodes['node_6'].RightChild, bst_find.Node)
-    
+
     def test_add_key_value_right(self) -> None:
         tree, nodes = self.create_test_tree()
         bst_find = tree.FindNodeByKey(1)
@@ -214,6 +208,45 @@ class TestBST(unittest.TestCase):
     def test_count(self) -> None:
         btree, _ = self.create_test_tree()
         self.assertEqual(btree.Count(), 7)
+
+    def test_wide_all_nodes(self) -> None:
+        tree, nd = self.create_test_tree()
+        searched_nodes = tree.WideAllNodes()
+        right_order = (
+            nd['node_8'], nd['node_4'], nd['node_12'], nd['node_2'],
+            nd['node_6'], nd['node_10'], nd['node_14']
+        )
+        self.assertTupleEqual(searched_nodes, right_order)
+
+    def test_deep_all_nodes_in(self) -> None:
+        tree, nd = self.create_test_tree()
+        searched_nodes = tree.DeepAllNodes(0)
+        right_order = (
+            nd['node_2'], nd['node_4'], nd['node_6'],
+            nd['node_8'],
+            nd['node_10'], nd['node_12'], nd['node_14']
+        )
+        self.assertTupleEqual(searched_nodes, right_order)
+
+    def test_deep_all_nodes_post(self) -> None:
+        tree, nd = self.create_test_tree()
+        searched_nodes = tree.DeepAllNodes(1)
+        right_order = (
+            nd['node_2'], nd['node_6'], nd['node_4'],
+            nd['node_10'], nd['node_14'], nd['node_12'],
+            nd['node_8']
+        )
+        self.assertTupleEqual(searched_nodes, right_order)
+
+    def test_deep_all_nodes_pre(self) -> None:
+        tree, nd = self.create_test_tree()
+        searched_nodes = tree.DeepAllNodes(2)
+        right_order = (
+            nd['node_8'],
+            nd['node_4'], nd['node_2'], nd['node_6'],
+            nd['node_12'], nd['node_10'], nd['node_14'],
+        )
+        self.assertTupleEqual(searched_nodes, right_order)
 
 
 if __name__ == '__main__':
