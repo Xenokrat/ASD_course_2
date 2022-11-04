@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, Any
+from typing import Optional, Any, Tuple, List
 
 
 class BSTNode:
@@ -141,3 +141,85 @@ class BST:
             return _count(node.LeftChild) + _count(node.RightChild) + 1
 
         return _count(self.Root)
+
+    def WideAllNodes(self) -> Tuple[BSTNode]:
+
+        # return empty tuple if tree is empty
+        if self.Root is None:
+            return tuple()
+
+        result_nodes_list: List[BSTNode] = []
+        current_nodes: List[BSTNode] = [self.Root]  # nodes on level n
+
+        while True:
+            if not current_nodes:
+                return tuple(result_nodes_list)
+            next_nodes = []  # nodes on level n + 1
+
+            for node in current_nodes:
+                if node.LeftChild is not None:
+                    next_nodes.append(node.LeftChild)
+                if node.RightChild is not None:
+                    next_nodes.append(node.RightChild)
+
+            result_nodes_list.extend(current_nodes)
+            current_nodes = next_nodes.copy()
+
+    def DeepAllNodes(self, search_type: int) -> Tuple[BSTNode]:
+
+        # return from empty tree
+        if self.Root is None:
+            return tuple()
+
+        if search_type == 0:
+            return tuple(self._get_all_nodes_in_order(self.Root, []))
+
+        if search_type == 1:
+            return tuple(self._get_all_nodes_post_order(self.Root, []))
+
+        if search_type == 2:
+            return tuple(self._get_all_nodes_pre_order(self.Root, []))
+
+        return tuple()
+
+    def _get_all_nodes_in_order(
+        self,
+        root: Optional[BSTNode],
+        result_nodes_list: List[BSTNode]
+    ) -> List[BSTNode]:
+
+        if root is not None:
+            # 1 in-order
+            self._get_all_nodes_in_order(root.LeftChild, result_nodes_list)
+            result_nodes_list.append(root)
+            self._get_all_nodes_in_order(root.RightChild, result_nodes_list)
+
+        return result_nodes_list
+
+    def _get_all_nodes_post_order(
+        self,
+        root: Optional[BSTNode],
+        result_nodes_list: List[BSTNode]
+    ) -> List[BSTNode]:
+
+        if root is not None:
+            # 2 post order
+            self._get_all_nodes_post_order(root.LeftChild, result_nodes_list)
+            self._get_all_nodes_post_order(root.RightChild, result_nodes_list)
+            result_nodes_list.append(root)
+
+        return result_nodes_list
+
+    def _get_all_nodes_pre_order(
+        self,
+        root: Optional[BSTNode],
+        result_nodes_list: List[BSTNode]
+    ) -> List[BSTNode]:
+
+        if root is not None:
+            # 3 pre order
+            result_nodes_list.append(root)
+            self._get_all_nodes_pre_order(root.LeftChild, result_nodes_list)
+            self._get_all_nodes_pre_order(root.RightChild, result_nodes_list)
+
+        return result_nodes_list
