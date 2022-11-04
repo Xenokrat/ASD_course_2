@@ -33,3 +33,28 @@ class aBST:
                 return _find_key_index(2 * index + 2, key)
 
         return _find_key_index(0, key)  # None if not found
+
+    def AddKey(self, key: int) -> int:
+        """adding key to array"""
+
+        index: Optional[int] = self.FindKeyIndex(key)
+
+        # return index of added or existing key, or -1 if cannot add
+        if index is None:
+            return -1
+
+        if index < 0:
+            self.Tree[-index] = key
+            return -index
+
+        # if index == 0, this could mean that tree is empty,
+        # or we found key in 1st node in 1-node tree
+        if (index == 0) and (self.Tree[0] is None):
+            self.Tree[0] = key
+            return index
+
+        if (index == 0) and (self.Tree[0] == key):
+            return index
+
+        if index > 0:
+            return index
