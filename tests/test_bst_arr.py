@@ -79,3 +79,10 @@ class TestaBST(unittest.TestCase):
         add_key_res = tree.AddKey(5)
         self.assertEqual(add_key_res, 0)
         self.assertEqual(tree.Tree[0], 5)
+
+    def test_create_tree_from_scratch(self) -> None:
+        tree = aBST(3)
+        key_list = (50, 25, 75, 37, 62, 84, 31, 43, 55, 92)
+        for key in key_list:
+            tree.AddKey(key)
+        self.assertListEqual(tree.Tree, self.create_test_tree().Tree)
