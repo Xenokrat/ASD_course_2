@@ -51,10 +51,5 @@ class aBST:
         # or we found key in 1st node in 1-node tree
         if (index == 0) and (self.Tree[0] is None):
             self.Tree[0] = key
-            return index
 
-        if (index == 0) and (self.Tree[0] == key):
-            return index
-
-        if index > 0:
-            return index
+        return index
