@@ -47,3 +47,35 @@ class TestaBST(unittest.TestCase):
 
         index = tree.FindKeyIndex(2)
         self.assertIsNone(index)
+
+    def test_add_existing_key(self) -> None:
+        tree = self.create_test_tree()
+        add_key_res = tree.AddKey(37)
+        self.assertEqual(add_key_res, 4)
+        # check that Tree array not changed
+        self.assertListEqual(tree.Tree, self.create_test_tree().Tree)
+
+    def test_add_new_key(self) -> None:
+        tree = self.create_test_tree()
+        add_key_res = tree.AddKey(80)
+        self.assertEqual(add_key_res, 13)
+        self.assertEqual(tree.Tree[13], 80)
+
+    def test_cannot_add_key(self) -> None:
+        tree = self.create_test_tree()
+        add_key_res = tree.AddKey(52)
+        self.assertEqual(add_key_res, -1)
+        # check that Tree array not changed
+        self.assertListEqual(tree.Tree, self.create_test_tree().Tree)
+
+    def test_add_existing_root(self) -> None:
+        tree = aBST(0)
+        tree.Tree[0] = 1
+        add_key_res = tree.AddKey(1)
+        self.assertEqual(add_key_res, 0)
+
+    def test_add_in_empty_tree(self) -> None:
+        tree = aBST(0)
+        add_key_res = tree.AddKey(5)
+        self.assertEqual(add_key_res, 0)
+        self.assertEqual(tree.Tree[0], 5)
