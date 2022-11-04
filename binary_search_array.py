@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional, Union
 
 
 class aBST:
@@ -7,13 +7,13 @@ class aBST:
     def __init__(self, depth: int) -> None:
         """calculate array size for tree with given depth"""
 
-        def _get_recr_tree_size(depth):
+        def _get_recr_tree_size(depth) -> int:
             if depth < 0:
                 return 0
             return pow(2, depth) + _get_recr_tree_size(depth - 1)
 
         tree_size = _get_recr_tree_size(depth)
-        self.Tree = [None] * tree_size  # array of keys
+        self.Tree: List[Union[int, None]] = [None] * tree_size  # array of keys
 
     def FindKeyIndex(self, key: int) -> Optional[int]:
         """searching key index withing array"""
