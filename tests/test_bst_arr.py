@@ -35,7 +35,7 @@ class TestaBST(unittest.TestCase):
         index = tree.FindKeyIndex(100)
         self.assertIsNone(index)
 
-    def test_return_from_empty_tree(self) -> None:
+    def test_return_index_from_empty_tree(self) -> None:
         tree = aBST(0)
         index = tree.FindKeyIndex(1)
         self.assertEqual(index, 0)
