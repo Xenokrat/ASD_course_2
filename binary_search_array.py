@@ -14,3 +14,22 @@ class aBST:
 
         tree_size = _get_recr_tree_size(depth)
         self.Tree = [None] * tree_size  # array of keys
+
+    def FindKeyIndex(self, key: int) -> Optional[int]:
+        """searching key index withing array"""
+
+        def _find_key_index(index, key):
+            if index >= len(self.Tree):
+                return None
+
+            root = self.Tree[index]
+            if root is None:
+                return index * -1
+            if root == key:
+                return index
+            if key < root:
+                return _find_key_index(2 * index + 1, key)
+            if key > root:
+                return _find_key_index(2 * index + 2, key)
+
+        return _find_key_index(0, key)  # None if not found
