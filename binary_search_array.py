@@ -5,8 +5,7 @@ class aBST:
     """Binary search tree implemented as a array"""
 
     def __init__(self, depth: int) -> None:
-        # calculate array size for tree with given depth
-        # recr version
+        """calculate array size for tree with given depth"""
 
         def _get_recr_tree_size(depth):
             if depth < 0:
