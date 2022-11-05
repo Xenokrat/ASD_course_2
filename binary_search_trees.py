@@ -94,7 +94,6 @@ class BST:
             return False
 
         node_to_delete = bst_find.Node
-
         if node_to_delete.LeftChild is None:
             self._replace_node(node_to_delete, node_to_delete.RightChild)
             return True
@@ -108,14 +107,14 @@ class BST:
             self._replace_node(successor, successor.RightChild)
         self._replace_node(node_to_delete, successor)
 
-        if successor is not None:
-            successor.LeftChild = node_to_delete.LeftChild
-            if successor.LeftChild is not None:
-                successor.LeftChild.Parent = successor
-
-            successor.RightChild = node_to_delete.RightChild
-            if successor.RightChild is not None:
-                successor.RightChild.Parent = successor
+        if successor is None:
+            return True
+        successor.LeftChild = node_to_delete.LeftChild
+        if successor.LeftChild is not None:
+            successor.LeftChild.Parent = successor
+        successor.RightChild = node_to_delete.RightChild
+        if successor.RightChild is not None:
+            successor.RightChild.Parent = successor
         return True
 
     def _replace_node(self,
@@ -135,11 +134,11 @@ class BST:
             successor.Parent = node_to_delete.Parent
 
     def Count(self) -> int:
+
         def _count(node: Optional[BSTNode]) -> int:
             if node is None:
                 return 0
             return _count(node.LeftChild) + _count(node.RightChild) + 1
-
         return _count(self.Root)
 
     def WideAllNodes(self) -> Tuple[BSTNode]:
