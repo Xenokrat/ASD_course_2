@@ -6,31 +6,23 @@ def GenerateBBSTArray(a: List[int]) -> List[int]:
         return []
 
     a.sort()
-    root = _get_root(a)
-    return [root] + _generate_bbst_array(a)
+    balanced_array = len(a) * [0]
+    _generate_bst_array(a, balanced_array, 0)
+    return balanced_array
 
 
-def _generate_bbst_array(array: List[int]) -> List[int]:
-    """Recursivly return left / right root's children"""
+def _generate_bst_array(array: List[int],
+                        balanced_array: List[int],
+                        index: int) -> None:
+    """Recursively return left / right root's children"""
+
+    if not array:
+        return None
 
     mid = len(array) // 2
-    if mid < 2:
-        return []
+    balanced_array[index] = array[mid]
 
-    left_array = array[:mid]
-    right_array = array[mid:]
-
-    left_child = _get_root(left_array)
-    right_child = _get_root(right_array)
-
-    return (
-        [left_child, right_child]
-        + _generate_bbst_array(array[:mid])
-        + _generate_bbst_array(array[mid:])
-    )
-
-
-def _get_root(array: List[int]) -> int:
-    """Return root as center element of array"""
-
-    return array[len(array) // 2]
+    # left ancestor
+    _generate_bst_array(array[:mid], balanced_array, index * 2 + 1)
+    # right ancestor
+    _generate_bst_array(array[mid + 1:], balanced_array, index * 2 + 2)
