@@ -59,6 +59,29 @@ class BalancedBST:
 
         return root
 
-    def IsBalanced(self, root_node: BSTNode) -> bool:
+    def IsBalanced(self, root_node: Optional[BSTNode]) -> bool:
         """Check if tree part from root_node is balanced"""
-        return False
+
+        if root_node is None:
+            return True
+
+        left_depth = self._get_depth(root_node.LeftChild)
+        right_depth = self._get_depth(root_node.RightChild)
+        if abs(left_depth - right_depth) > 1:
+            return False
+
+        return (
+                self.IsBalanced(root_node.LeftChild)
+                and
+                self.IsBalanced(root_node.RightChild)
+        )
+
+    def _get_depth(self, root_node: Optional[BSTNode]) -> int:
+        # base case
+        if root_node is None:
+            return 0
+
+        return max(
+            self._get_depth(root_node.LeftChild),
+            self._get_depth(root_node.RightChild),
+        ) + 1
