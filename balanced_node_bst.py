@@ -1,3 +1,7 @@
+"""Create binary search tree from array,
+   check if created tree is balanced
+"""
+
 from __future__ import annotations
 from typing import List, Optional
 
