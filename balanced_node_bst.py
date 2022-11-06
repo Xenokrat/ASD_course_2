@@ -16,6 +16,10 @@ class BSTNode:
         self.RightChild = None
         self.Level = 0
 
+    def set_node_level(self) -> None:
+        if self.Parent is not None:
+            self.Level = self.Parent.Level + 1
+
 
 class BalancedBST:
     """Binary tree representation"""
