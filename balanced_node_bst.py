@@ -48,6 +48,7 @@ class BalancedBST:
         mid = len(array) // 2
         key = array[mid]
         root = BSTNode(key, parent)
+        root.set_node_level()
 
         # recursively call F() with [:mid] slice and
         # root as parent node, set root.LeftChild to F() result
