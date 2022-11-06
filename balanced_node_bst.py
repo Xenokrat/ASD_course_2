@@ -17,6 +17,8 @@ class BSTNode:
         self.Level = 0
 
     def set_node_level(self) -> None:
+        """set node level"""
+
         if self.Parent is not None:
             self.Level = self.Parent.Level + 1
 
