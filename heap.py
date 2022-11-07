@@ -9,6 +9,17 @@ class Heap:
     def __init__(self) -> None:
         self.HeapArray: List[int] = []  # stores non-negative nums as keys
 
+    def MakeHeap(self, a, depth) -> None:
+        """create HeapArray from array 'a' with given 'depth'"""
+
+        heap_size = pow(2, depth + 1) - 1
+        if len(a) > heap_size:
+            return
+
+        self.HeapArray = [None] * heap_size
+        for key in a:
+            self.Add(key)
+
     def Add(self, key) -> bool:
         """add new key and re-built heap"""
 
