@@ -20,6 +20,26 @@ class Heap:
         for key in a:
             self.Add(key)
 
+    def GetMax(self) -> int:
+        """return root key and re-built heap"""
+
+        if not self.HeapArray:
+            return -1  # -1 if heap is emptY
+
+        max_value = self.HeapArray[0]
+        # 1 grab last non-none value
+        index = -1
+        while -index <= len(self.HeapArray):
+            if self.HeapArray[index] is not None:
+                key = self.HeapArray[index]
+                self.HeapArray[0] = key
+                self.HeapArray[index] = None
+                self._shift_down(key, index)
+                break
+            index -= 1
+
+        return max_value
+
     def Add(self, key) -> bool:
         """add new key and re-built heap"""
 
