@@ -43,7 +43,23 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(heap.Add(10))
 
     def test_make_heap(self):
-        pass
+        """test creating heap from zero"""
+
+        heap = Heap()
+        array = [7, 11, 4, 9, 6, 3, 1, 2, 5, 8]
+        heap.MakeHeap(array, 3)
+        self.assertListEqual(
+            heap.HeapArray,
+            [11, 9, 4, 7, 8, 3, 1, 2, 5, 6, None, None, None, None, None]
+        )
+
+    def test_cannot_make_heap(self):
+        """cannot insert array if it's too big"""
+
+        heap = Heap()
+        array = list(range(16))
+        heap.MakeHeap(array, 3)
+        self.assertFalse(heap.HeapArray)
 
     def test_get_max(self):
         pass
