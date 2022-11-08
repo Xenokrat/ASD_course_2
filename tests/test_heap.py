@@ -62,8 +62,27 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(heap.HeapArray)
 
     def test_get_max(self):
-        pass
+        """test get max value and re-built the heap"""
 
+        heap = Heap()
+        array = [7, 11, 4, 9, 6, 3, 1, 2, 5, 8]
+        heap.MakeHeap(array, 3)
+        self.assertEqual(heap.GetMax(), 11)
+        self.assertListEqual(
+            heap.HeapArray,
+            [9, 8, 4, 7, 6, 3, 1, 2, 5, None, None, None, None, None, None]
+        )
+        self.assertEqual(heap.GetMax(), 9)
+        self.assertListEqual(
+            heap.HeapArray,
+            [8, 7, 4, 5, 6, 3, 1, 2, None, None, None, None, None, None, None]
+        )
+
+    def test_get_max_from_empty(self):
+        """test should return -1 from empty heap"""
+
+        heap = Heap()
+        self.assertEqual(heap.GetMax(), -1)
 
 
 if __name__ == '__main__':
