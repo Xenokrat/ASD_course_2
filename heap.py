@@ -1,18 +1,19 @@
 """Heap"""
 
-from typing import List
+from typing import List, Union
 
 
 class Heap:
     """Represents heap"""
 
     def __init__(self) -> None:
-        self.HeapArray: List[int] = []  # stores non-negative nums as keys
+        # stores non-negative nums as keys
+        self.HeapArray: List[Union[int, None]] = []
 
     def MakeHeap(self, a, depth) -> None:
         """create HeapArray from array 'a' with given 'depth'"""
 
-        heap_size = pow(2, depth + 1) - 1
+        heap_size: int = pow(2, depth + 1) - 1
         if len(a) > heap_size:
             return
 
@@ -73,3 +74,31 @@ class Heap:
             self.HeapArray[index] = parent_key
             index = parent_index
 
+    def _shift_down(self, key: int, index: int) -> None:
+        """push key down to right position"""
+
+        while True:
+            left_child_index: int = 2 * index + 1
+            right_child_index: int = left_child_index + 1
+
+            # exit case
+            if right_child_index >= len(self.HeapArray):
+                return None
+
+            left_child_key: int = self.HeapArray[left_child_index]
+            right_child_key: int = self.HeapArray[right_child_index]
+
+            if left_child_key > right_child_key:
+                max_child_key = left_child_key
+                max_child_index = left_child_index
+            else:
+                max_child_key = right_child_key
+                max_child_index = right_child_index
+
+            if key >= max_child_key:
+                return None
+
+            # swapping keys
+            self.HeapArray[max_child_index] = key
+            self.HeapArray[index] = max_child_key
+            index = max_child_index
