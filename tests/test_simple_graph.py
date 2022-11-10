@@ -31,6 +31,7 @@ class MyTestCase(unittest.TestCase):
         """test for adding new vertex"""
 
         sgraph = create_test_graph()
+        self.assertIsNone(sgraph.vertex[5])
         sgraph.AddVertex(6)
         # there is new Vertex in list
         self.assertTrue(isinstance(sgraph.vertex[5], Vertex))
@@ -52,18 +53,18 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(isinstance(sgraph.vertex[3], Vertex))
         self.assertEqual(sgraph.vertex[3].Value, 4)
         # there is some connections for other vertexes
-        self.assertTrue(sgraph.m_adjacency[3] == [1] * 5 + [0] * 2)
+        self.assertListEqual(sgraph.m_adjacency[3], [1] * 5 + [0] * 2)
         column_d = [i[3] for i in sgraph.m_adjacency]
-        self.assertTrue(column_d == [1] * 5 + [0] * 2)
+        self.assertListEqual(column_d, [1] * 5 + [0] * 2)
 
         sgraph.RemoveVertex(3)
 
         # no vertex at index 3
         self.assertIsNone(sgraph.vertex[3])
         # no connections with other vertexes
-        self.assertTrue(sgraph.m_adjacency[3] == [0] * 7)
+        self.assertListEqual(sgraph.m_adjacency[3], [0] * 7)
         column_d = [i[3] for i in sgraph.m_adjacency]
-        self.assertTrue(column_d == [0] * 7)
+        self.assertListEqual(column_d, [0] * 7)
 
     def test_is_edge(self):
         """test for checking if there is connection between 2 vertexes"""
@@ -86,22 +87,30 @@ class MyTestCase(unittest.TestCase):
 
         sgraph = create_test_graph()
         self.assertFalse(sgraph.IsEdge(0, 4))
+        self.assertFalse(sgraph.IsEdge(4, 0))
         self.assertFalse(sgraph.IsEdge(1, 2))
+        self.assertFalse(sgraph.IsEdge(2, 1))
         sgraph.AddEdge(0, 4)
         sgraph.AddEdge(1, 2)
         self.assertTrue(sgraph.IsEdge(0, 4))
+        self.assertTrue(sgraph.IsEdge(4, 0))
         self.assertTrue(sgraph.IsEdge(1, 2))
+        self.assertTrue(sgraph.IsEdge(2, 1))
 
     def test_remove_edge(self):
         """test for adding new vertex"""
 
         sgraph = create_test_graph()
         self.assertTrue(sgraph.IsEdge(0, 1))
+        self.assertTrue(sgraph.IsEdge(1, 0))
         self.assertTrue(sgraph.IsEdge(1, 4))
+        self.assertTrue(sgraph.IsEdge(4, 1))
         sgraph.RemoveEdge(0, 1)
         sgraph.RemoveEdge(1, 4)
         self.assertFalse(sgraph.IsEdge(0, 1))
+        self.assertFalse(sgraph.IsEdge(1, 0))
         self.assertFalse(sgraph.IsEdge(1, 4))
+        self.assertFalse(sgraph.IsEdge(4, 1))
 
 
 if __name__ == '__main__':
