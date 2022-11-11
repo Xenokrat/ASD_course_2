@@ -46,13 +46,7 @@ class SimpleTree:
         if self.Root is None:
             return []
 
-        def _get_all_nodes(node: SimpleTreeNode) -> List[SimpleTreeNode]:
-            nodes_list = [node]
-            for i in node.Children:
-                nodes_list.extend(_get_all_nodes(i))
-            return nodes_list
-
-        return _get_all_nodes(self.Root)
+        return self._get_all_nodes(self.Root)
 
     def FindNodesByValue(self, val) -> List[SimpleTreeNode]:
         """find all nodes with given value"""
@@ -84,13 +78,7 @@ class SimpleTree:
         if self.Root is None:
             return 0
 
-        def _count_all_leafs(node: SimpleTreeNode) -> int:
-            leaf_count = 0 if node.Children else 1
-            for i in node.Children:
-                leaf_count += _count_all_leafs(i)
-            return leaf_count
-
-        return _count_all_leafs(self.Root)
+        return self._count_all_leafs(self.Root)
 
     def EvenTrees(self) -> List[SimpleTreeNode]:
         """
@@ -134,3 +122,19 @@ class SimpleTree:
         for i in node.Children:
             nodes_count += self._count_all_nodes(i)
         return nodes_count
+
+    def _get_all_nodes(self, node: SimpleTreeNode) -> List[SimpleTreeNode]:
+        """recursive call for self.GetAllNodes method"""
+
+        nodes_list = [node]
+        for i in node.Children:
+            nodes_list.extend(self._get_all_nodes(i))
+        return nodes_list
+
+    def _count_all_leafs(self, node: SimpleTreeNode) -> int:
+        """recursive call for self.LeafCount method"""
+
+        leaf_count = 0 if node.Children else 1
+        for i in node.Children:
+            leaf_count += self._count_all_leafs(i)
+        return leaf_count
