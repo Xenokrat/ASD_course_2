@@ -91,3 +91,46 @@ class SimpleTree:
             return leaf_count
 
         return _count_all_leafs(self.Root)
+
+    def EvenTrees(self) -> List[SimpleTreeNode]:
+        """
+        Find forest consists of even-nodes trees, after deleting maximum
+        amount of edges between adjacent nodes
+
+        Returns:
+            list of paired adjacent nodes to delete edges between
+        """
+
+        edges_to_remove = []
+        if self.Root is None:
+            return edges_to_remove
+
+        # if tree consists of odd number of nodes,
+        # it's impossible to make even trees forest
+        if self._count_all_nodes(self.Root) % 2 == 1:
+            return edges_to_remove
+
+        return self._even_trees(self.Root, edges_to_remove)
+
+    def _even_trees(
+        self,
+        root: SimpleTreeNode,
+        edges_to_remove: List[SimpleTreeNode]
+    ) -> List[SimpleTreeNode]:
+        """recursive call for self.EvenTrees"""
+
+        for child in root.Children:
+            subtree_size = self._count_all_nodes(child)
+            if subtree_size % 2 == 0:
+                edges_to_remove.extend([root, child])
+            self._even_trees(child, edges_to_remove)
+
+        return edges_to_remove
+
+    def _count_all_nodes(self, node: SimpleTreeNode) -> int:
+        """returns count of nodes from given node"""
+
+        nodes_count = 1
+        for i in node.Children:
+            nodes_count += self._count_all_nodes(i)
+        return nodes_count
