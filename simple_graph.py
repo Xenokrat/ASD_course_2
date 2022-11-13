@@ -7,6 +7,7 @@ class Vertex:
 
     def __init__(self, val: int) -> None:
         self.Value = val
+        self.Hit = False
 
     def __repr__(self) -> str:
         return f'Vertex #{self.Value}'
@@ -64,3 +65,59 @@ class SimpleGraph:
 
         self.m_adjacency[v1][v2] = 0
         self.m_adjacency[v2][v1] = 0
+
+    def DepthFirstSearch(self, VFrom: int, VTo: int) -> List[Vertex]:
+        """
+        Find path between VFrom and VTo
+        Params:
+            VFrom (int): index of starting Vertex
+            VTo (int): index of ending Vertex
+
+        Return:
+            List of Vertexes between Vertex[VFrom] and Vertex[VTo]
+        """
+
+        # prepare graph to search
+        for i in self.vertex:
+            if i is not None:
+                i.Hit = False
+
+        path: List[int] = []
+        path_indexes = self._depth_first_search(VFrom, path, VTo)
+        return [self.vertex[i] for i in path_indexes]
+
+    def _depth_first_search(
+            self,
+            current_index: int,
+            path: List[int],
+            end_index: int
+    ) -> List[int]:
+
+        self.vertex[current_index].Hit = True
+        if current_index not in path:
+            path.append(current_index)
+
+        adjacent_vertex = []
+        for vertex_index, edge in enumerate(self.m_adjacency[current_index]):
+            # base case -- found path
+            if (vertex_index == end_index) and (edge == 1):
+                path.append(vertex_index)
+                return path
+
+            # track adjacent not checked vertexes
+            if (edge == 1) and (self.vertex[vertex_index].Hit is False):
+                adjacent_vertex.append(vertex_index)
+
+        if adjacent_vertex:
+            return self._depth_first_search(
+                adjacent_vertex[0], path, end_index
+            )
+
+        if (not adjacent_vertex) and (len(path) > 1):
+            path.pop()
+            return self._depth_first_search(
+                path[-1], path, end_index
+            )
+
+        # there are no unchecked vertexes and only last element in path
+        return []
