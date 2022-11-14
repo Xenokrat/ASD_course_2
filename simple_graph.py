@@ -1,5 +1,29 @@
 """Simple matrix-based graph"""
-from typing import List, Optional
+from typing import List, Optional, Any
+
+
+class Queue:
+    """represents queue"""
+
+    def __init__(self) -> None:
+        self.array = []
+
+    def enqueue(self, item: Any):
+        """add item to queue"""
+
+        self.array.insert(0, item)
+
+    def dequeue(self):
+        """get item and delete from queue"""
+
+        if not self.array:
+            return None
+        return self.array.pop()
+
+    def size(self):
+        """returns size of queue"""
+
+        return len(self.array)
 
 
 class Vertex:
