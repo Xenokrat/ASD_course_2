@@ -145,6 +145,64 @@ class SimpleGraph:
         # there are no unchecked vertexes and only last element in path
         return []
 
+    def BreadthFirstSearch(self, VFrom: int, VTo: int) -> List[Vertex]:
+        ""1q
+        Find path between VFrom and VTo
+        Finds optimal path, searching wide
+        Params:
+            VFrom (int): index of starting Vertex
+            VTo (int): index of ending Vertex
+
+        Return:
+            List of Vertexes between Vertex[VFrom] and Vertex[VTo]
+        """
+
+        self._reset_vertexes()
+        self._bfs_queue.array = []
+        self.vertex[VFrom].Hit = True
+
+        if not self._breadth_first_search(VFrom, VTo):
+            return []
+
+        path_vertexes = [self.vertex[VTo]]
+        prev_index = self.vertex[VTo].bfs_previous
+        while True:
+            path_vertexes.insert(0, self.vertex[prev_index])
+            prev_index = self.vertex[prev_index].bfs_previous
+            if prev_index is None:
+                break
+        return path_vertexes
+
+    def _breadth_first_search(
+            self,
+            current_index: int,
+            end_index: int
+    ) -> bool:
+        """will return True is path is found"""
+
+        for vert_index, edge in enumerate(self.m_adjacency[current_index]):
+
+            # check is vertex is found
+            if (vert_index == end_index) and (edge == 1):
+                self.vertex[end_index].bfs_previous = current_index
+                return True
+
+            # check if we should add unchecked vertex to queue
+            if (
+                (self.vertex[vert_index] is not None)
+                and (edge == 1)
+                and (self.vertex[vert_index].Hit is False)
+            ):
+                self.vertex[vert_index].Hit = True
+                self._bfs_queue.enqueue(vert_index)
+                self.vertex[vert_index].bfs_previous = current_index
+
+        if self._bfs_queue.size() == 0:
+            return False
+
+        current_index = self._bfs_queue.dequeue()
+        return self._breadth_first_search(current_index, end_index)
+
     def _reset_vertexes(self) -> None:
         """clean vertexes status to preform search"""
 
