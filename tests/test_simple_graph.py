@@ -153,6 +153,45 @@ class MyTestCase(unittest.TestCase):
         sgraph.RemoveEdge(3, 4)
         self.assertListEqual(sgraph.DepthFirstSearch(0, 4), [])
 
+    def test_breadth_first_search(self):
+        """testing find path between 2 vertexes"""
+
+        sgraph = create_test_graph()
+        self.assertListEqual(
+            sgraph.BreadthFirstSearch(0, 4),
+            [sgraph.vertex[0], sgraph.vertex[1], sgraph.vertex[4]]
+        )
+        sgraph.RemoveEdge(0, 1)
+        sgraph.RemoveEdge(0, 3)
+        self.assertListEqual(
+            sgraph.BreadthFirstSearch(0, 4),
+            [sgraph.vertex[0], sgraph.vertex[2],
+             sgraph.vertex[3], sgraph.vertex[4]]
+        )
+
+    def test_breadth_first_search2(self):
+        """more testing find path between 2 vertexes"""
+
+        sgraph = create_test_graph()
+        sgraph.RemoveEdge(0, 1)
+        sgraph.AddVertex(6)
+        sgraph.AddVertex(7)
+        sgraph.AddEdge(4, 5)
+        sgraph.AddEdge(4, 6)
+        self.assertListEqual(
+            sgraph.BreadthFirstSearch(0, 6),
+            [sgraph.vertex[0], sgraph.vertex[3],
+             sgraph.vertex[4], sgraph.vertex[6]]
+        )
+
+    def test_breadth_first_search_no_path(self):
+        """testing path should not exist"""
+
+        sgraph = create_test_graph()
+        sgraph.RemoveEdge(1, 4)
+        sgraph.RemoveEdge(3, 4)
+        self.assertListEqual(sgraph.BreadthFirstSearch(0, 4), [])
+
 
 if __name__ == '__main__':
     unittest.main()
