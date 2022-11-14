@@ -146,7 +146,7 @@ class SimpleGraph:
         return []
 
     def BreadthFirstSearch(self, VFrom: int, VTo: int) -> List[Vertex]:
-        ""1q
+        """
         Find path between VFrom and VTo
         Finds optimal path, searching wide
         Params:
