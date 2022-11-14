@@ -104,10 +104,7 @@ class SimpleGraph:
         """
 
         # prepare graph to search
-        for i in self.vertex:
-            if i is not None:
-                i.Hit = False
-
+        self._reset_vertexes()
         path: List[int] = []
         path_indexes = self._depth_first_search(VFrom, path, VTo)
         return [self.vertex[i] for i in path_indexes]
@@ -147,3 +144,11 @@ class SimpleGraph:
 
         # there are no unchecked vertexes and only last element in path
         return []
+
+    def _reset_vertexes(self) -> None:
+        """clean vertexes status to preform search"""
+
+        for vert in self.vertex:
+            if vert is not None:
+                vert.Hit = False
+                vert.bfs_previous = None
