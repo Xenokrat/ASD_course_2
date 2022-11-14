@@ -32,6 +32,7 @@ class Vertex:
     def __init__(self, val: int) -> None:
         self.Value = val
         self.Hit = False
+        self.bfs_previous: Optional[int] = None
 
     def __repr__(self) -> str:
         return f'Vertex #{self.Value}'
@@ -44,6 +45,7 @@ class SimpleGraph:
         self.max_vertex = size
         self.m_adjacency: List[List[int]] = [[0] * size for _ in range(size)]
         self.vertex: List[Optional[Vertex]] = [None] * size
+        self._bfs_queue: Queue = Queue()
 
     def AddVertex(self, value: int) -> None:
         """add new vertex with 'value' in vacant place in self.vertex
