@@ -192,6 +192,28 @@ class MyTestCase(unittest.TestCase):
         sgraph.RemoveEdge(3, 4)
         self.assertListEqual(sgraph.BreadthFirstSearch(0, 4), [])
 
+    def test_weak_vertices(self) -> None:
+        sgraph = SimpleGraph(10)
+        sgraph.m_adjacency = [
+        [0, 1, 1, 0, 0, 0, 0, 0, 0],
+        [1, 0, 1, 1, 0, 0, 0, 0, 0],
+        [1, 1, 0, 1, 0, 1, 0, 0, 0],
+        [0, 1, 1, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 1, 0, 0, 0],
+        [0, 0, 1, 0, 1, 0, 1, 1, 0],
+        [0, 0, 0, 0, 0, 1, 0, 1, 0],
+        [0, 0, 0, 0, 0, 1, 1, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0],
+        ]
+        sgraph.vertex = [
+        Vertex(1), Vertex(2), Vertex(3), Vertex(4), Vertex(5),
+        Vertex(6), Vertex(7), Vertex(8), Vertex(9), None
+        ]
+        self.assertListEqual(
+            sgraph.WeakVertices(), [sgraph.vertex[4], sgraph.vertex[8]]
+        )
+
+
 
 if __name__ == '__main__':
     unittest.main()
