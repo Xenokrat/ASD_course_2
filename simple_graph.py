@@ -210,3 +210,41 @@ class SimpleGraph:
             if vert is not None:
                 vert.Hit = False
                 vert.bfs_previous = None
+
+    def WeakVertices(self) -> List[Vertex]:
+        """
+        Find all vertices that are not part of any triangles
+
+        Return:
+            List of "weak" vertices
+        """
+
+        weak_vert_list: List[Vertex] = []
+        for vertex_index, vertex in enumerate(self.vertex):
+            if vertex is None:
+                continue
+
+            # get list of adjacent vertices
+            adj_vertices_ind = [
+                vert_ind
+                for vert_ind, edge in enumerate(self.m_adjacency[vertex_index])
+                if edge == 1
+            ]
+
+            if len(adj_vertices_ind) < 2:
+                weak_vert_list.append(vertex)
+                continue
+
+            # check if any of them are connected
+            adj_vert_count = len(adj_vertices_ind)
+            is_part_of_triangle  = any([
+                self.IsEdge(adj_vertices_ind[x], adj_vertices_ind[y])
+                for x in range(adj_vert_count - 1)
+                for y in range(x + 1, adj_vert_count)
+            ])
+
+            if not is_part_of_triangle:
+                weak_vert_list.append(vertex)
+
+        return weak_vert_list
+
